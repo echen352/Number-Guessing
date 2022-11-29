@@ -1,0 +1,11 @@
+# Ignore Temporary Quartus & Questa Files
+*.qpf
+*.qsf
+*.qws
+*.bak
+*.ini
+*.wlf
+db/
+incremental_db/
+output_files/
+work/
