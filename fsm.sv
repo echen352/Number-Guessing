@@ -2,7 +2,7 @@
 					   input logic [2:0]guess, round,
 					   input logic [6:0]timer,
 						input logic comfirmButton,		// comfirm the input number
-					  output logic [6:0]Max_timer,
+					  //output logic [6:0]Max_timer,
 					  output logic [2:0]Max_guess, 
 					  output logic [1:0]Max_digit
 						);
@@ -87,27 +87,27 @@
 	begin
 		case(presentState)
 			diff1: begin
-				Max_timer <= 30;
+				//Max_timer <= 30;
 				Max_guess <= 3;
 				Max_digit <= 1;
 			end
 			diff2: begin
-				Max_timer <= 60;
+				//Max_timer <= 60;
 				Max_guess <= 4;
 				Max_digit <= 2;
 			end
 			diff3: begin
-				Max_timer <= 90;
+				//Max_timer <= 90;
 				Max_guess <= 5;
 				Max_digit <= 3;
 			end
 			gameover: begin
-				Max_timer <= 0;
+				//Max_timer <= 0;
 				Max_guess <= 0;
 				Max_digit <= 0;
 			end
 			win: begin
-				Max_timer <= 0;
+				//Max_timer <= 0;
 				Max_guess <= 0;
 				Max_digit <= 0;
 			end
