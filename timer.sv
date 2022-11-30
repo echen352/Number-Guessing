@@ -5,14 +5,14 @@ module timer(input logic clk,
 				 output logic [6:0]counter					
 				);
 
-logic  [1:0]stage;
+//logic  [1:0]stage;
 
 always_ff @(posedge clk)
 begin
 	
-	stage <= difficulty;
+	//stage <= difficulty;
 	
-	case(stage)
+	case(difficulty)
 		1:
 			counter <= 2'd30;
 		2:
