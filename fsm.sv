@@ -1,7 +1,7 @@
-  module FIFO_fsm(input logic clk, restart, 		// restart is reset button, change to sw
+  module fsm(input logic clk, restart, 		// restart is reset button, change to sw
 					   input logic [2:0]incorrect_guesses, round,
 					   input logic [6:0]timer,
-						input logic comfirmButton,		// comfirm the input number
+						input logic confirmButton,		// comfirm the input number
 					  //output logic [6:0]Max_timer,
 					  output logic [2:0]Max_incorrect_guesses, 
 					  output logic [1:0]Max_digit
@@ -21,8 +21,13 @@
 	begin	
 			case(presentState)
 				diff1: begin
+<<<<<<< HEAD
 						
 					if(comfirmButton)begin
+=======
+						diff_timer <= 1;
+					if(confirmButton)begin
+>>>>>>> 6cfe50e4fb8c964624bbd5e9aae8dae60ba86a3b
 						if( timer > 0 && incorrect_guesses <= 2 && round > 4 ) begin
 							nextState <= diff2;
 						end else if ( timer == 0 || incorrect_guesses > 2 ) begin
@@ -34,8 +39,13 @@
 				end
 				
 				diff2: begin
+<<<<<<< HEAD
 						
 					if(comfirmButton)begin				
+=======
+						diff_timer <= 2;
+					if(confirmButton)begin				
+>>>>>>> 6cfe50e4fb8c964624bbd5e9aae8dae60ba86a3b
 						if( timer > 0 && incorrect_guesses <= 3 && round > 4 ) begin
 							nextState <= diff3;
 						end else if ( timer == 0 || incorrect_guesses > 3 ) begin
@@ -47,8 +57,13 @@
 				end
 				
 				diff3: begin
+<<<<<<< HEAD
 						
 					if(comfirmButton)begin				
+=======
+						diff_timer <= 3;
+					if(confirmButton)begin				
+>>>>>>> 6cfe50e4fb8c964624bbd5e9aae8dae60ba86a3b
 						if( timer > 0 && incorrect_guesses <= 4 && round > 4 ) begin
 							nextState <= win;
 						end else if ( timer == 0 || incorrect_guesses > 4 ) begin
@@ -60,8 +75,13 @@
 				end	
 				
 				win: begin
+<<<<<<< HEAD
 					
 					if(comfirmButton)begin
+=======
+					diff_timer <= 0;
+					if(confirmButton)begin
+>>>>>>> 6cfe50e4fb8c964624bbd5e9aae8dae60ba86a3b
 						if(restart)
 							nextState <= diff1;
 						else 
@@ -71,8 +91,13 @@
 				end
 				
 				gameover: begin
+<<<<<<< HEAD
 						
 					if(comfirmButton)begin
+=======
+						diff_timer <= 0;
+					if(confirmButton)begin
+>>>>>>> 6cfe50e4fb8c964624bbd5e9aae8dae60ba86a3b
 							if(restart)
 								nextState <= diff1;
 							else 
