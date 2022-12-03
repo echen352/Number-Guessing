@@ -1,7 +1,7 @@
 // Timer setup for each difficulty
 
 module timer(input logic clk,
-				 input logic [1:0]difficulty,
+				 input logic [1:0]Max_digit, // represent difficulty 1, 2 or 3
 				 output logic [6:0]counter					
 				);
 
@@ -12,7 +12,7 @@ begin
 	
 	//stage <= difficulty;
 	
-	case(difficulty)
+	case(Max_digit)
 		1:
 			counter <= 2'd30;
 		2:

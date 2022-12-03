@@ -4,8 +4,7 @@
 						input logic comfirmButton,		// comfirm the input number
 					  //output logic [6:0]Max_timer,
 					  output logic [2:0]Max_incorrect_guesses, 
-					  output logic [1:0]Max_digit,
-					  output logic diff_timer
+					  output logic [1:0]Max_digit
 						);
 			   
 	typedef enum logic [2:0] {diff1, diff2, diff3, gameover, win} stateType;
@@ -22,7 +21,7 @@
 	begin	
 			case(presentState)
 				diff1: begin
-						diff_timer <= 1;
+						
 					if(comfirmButton)begin
 						if( timer > 0 && incorrect_guesses <= 2 && round > 4 ) begin
 							nextState <= diff2;
@@ -35,7 +34,7 @@
 				end
 				
 				diff2: begin
-						diff_timer <= 2;
+						
 					if(comfirmButton)begin				
 						if( timer > 0 && incorrect_guesses <= 3 && round > 4 ) begin
 							nextState <= diff3;
@@ -48,7 +47,7 @@
 				end
 				
 				diff3: begin
-						diff_timer <= 3;
+						
 					if(comfirmButton)begin				
 						if( timer > 0 && incorrect_guesses <= 4 && round > 4 ) begin
 							nextState <= win;
@@ -61,7 +60,7 @@
 				end	
 				
 				win: begin
-					diff_timer <= 0;
+					
 					if(comfirmButton)begin
 						if(restart)
 							nextState <= diff1;
@@ -72,7 +71,7 @@
 				end
 				
 				gameover: begin
-						diff_timer <= 0;
+						
 					if(comfirmButton)begin
 							if(restart)
 								nextState <= diff1;
