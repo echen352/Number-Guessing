@@ -1,4 +1,4 @@
-module hint1(input logic clk, comfirmButton,
+module hint123(input logic clk, comfirmButton,
 				 input logic [3:0]key0, key1, key2, answer0, answer1, answer2,
 				 input logic [1:0]Max_digit,
 				output logic [1:0]hint1, // 0 is lower, 1 is higher
