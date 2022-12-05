@@ -1,6 +1,6 @@
 module top_level(input logic clk, rst, confirmButton,
 					input logic [2:0] digitButtons,
-					output logic [6:0] seg1, seg2, seg3, seg4, seg5, seg6, seg7, seg8
+					output logic [6:0] seg1, seg2, seg3, seg4, seg5, seg6, seg7, seg8,
 					output logic [2:0] roundLED, diffLED);
 
 // synchronized logic
@@ -26,6 +26,7 @@ logic [3:0] target_digit_1, target_digit_2, target_digit_3; // get target number
 // fsm logic
 logic [1:0] max_digits;	// FSM -> Input Control; FSM -> 7-Seg; FSM -> Timer
 logic [1:0] WINorLOSE;	// FSM -> 7-Seg
+logic [2:0] guesses_left;	// FSM -> 7-Seg
 /*************************************************************************************************************************************************/
 
 
@@ -41,7 +42,7 @@ synch_digit_inputs fSynchDigits(.sig(digitButtons), .clk(clk), .reset(rstSync),
 
 
 // synchronize pushbutton control for player confirm					
-synch_confirm fSynchDigits(.sig(confirmButton), .clk(clk), .reset(rstSync),
+synch_confirm fSynchConfirm(.sig(confirmButton), .clk(clk), .reset(rstSync),
 					.falling_ind(confirmSync));
 
 
@@ -54,23 +55,23 @@ synch_confirm fSynchDigits(.sig(confirmButton), .clk(clk), .reset(rstSync),
 			 [3:0] new confirmed digit1, new confirmed digit2, new confirmed digit3
 */
 input_control fInput(.clk(clk), .restart(rstSync),
-					.display_digit_1(digitDisplay1), .display_digit_2(digitDisplay2), .display_digit_3(digitDisplay3),
+					//.display_digit_1(digitDisplay1), .display_digit_2(digitDisplay2), .display_digit_3(digitDisplay3),
 					.max_digits(max_digits),
 					.pushbuttons(digitSync),
 					.confirm(confirmSync),
 					.update_digit_1(digitDisplay1), .update_digit_2(digitDisplay2), .update_digit_3(digitDisplay3),
-					.confirm_digit_1(confirm_digit_1), .confirm_digit_2(confirm_digit_2), .confirm_digit_3(confirm_digit_3));
+					.compare_digit_1(confirm_digit_1), .compare_digit_2(confirm_digit_2), .compare_digit_3(confirm_digit_3));
 
 
 
 /*	-----------------------------------------------------------------------------------------------------------------------------------------------
 	fsm:	controls the progression of the game
 	inputs: [2:0] num incorrect guesses, [2:0] num rounds, [6:0] timer, [0] confirm button, [0] restart, [0] clk
-	outputs: [1:0] max digits, [1:0] Win/Lose
+	outputs: [1:0] max digits, [1:0] Win/Lose, [2:0] guesses left
 */
-fsm fFSM(.clk(clk), .restart(rstSync), .confirmButton(confirmSync)
+fsm fFSM(.clk(clk), .restart(rstSync), .confirmButton(confirmSync),
 			.incorrect_guesses(incorrect_guesses), .round(round), .timer(currentTimerCount),
-			.Max_digit(max_digits), .WINorLOSE(WINorLOSE));
+			.Max_digit(max_digits), .WINorLOSE(WINorLOSE), .guesses_left(guesses_left));
 
 
 /*	-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -92,8 +93,9 @@ timer fTimer(.clk(clk), .restart(rstSync),
 	output:	[1:0] hint
 */
 hint123 fHint(.clk(clk), .confirmButton(confirmSync), .restart(rstSync),
-				 .key0(confirm_digit_1), .key1(confirm_digit_2), .key2(confirm_digit_3), answer0, answer1, answer2,
-				.hint1(LOWorHIGH), .incorrect_guesses(incorrect_guesses), .round(round));
+				 .key0(confirm_digit_1), .key1(confirm_digit_2), .key2(confirm_digit_3),
+				 .answer0(target_digit_1), .answer1(target_digit_2), .answer2(target_digit_3),
+				.hint1(LOWorHIGH), .incorrect_guess(incorrect_guesses), .round(round));
 
 
 
@@ -114,7 +116,7 @@ get_target_number fGetNum(.Max_digit(max_digits), .round(round),
 	outputs: [2:0] round (LEDs), [2:0] difficulty (LEDs),
 			 [6:0] for all 8 7-segments
 */
-sevenSeg f7Seg(.timer(currentTimerCount), .guesses(), .guess1(digitDisplay1), guess2(digitDisplay2), .guess3(digitDisplay3),		
+sevenSeg f7Seg(.clk(clk), .timer(currentTimerCount), .guesses(guesses_left), .guess1(digitDisplay1), .guess2(digitDisplay2), .guess3(digitDisplay3),		
 					 .hint1(LOWorHIGH), .round(round),
 					 .difficulty(max_digits),
 					 .WINorLOSE(WINorLOSE),

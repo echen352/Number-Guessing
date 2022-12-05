@@ -5,7 +5,8 @@
 					  //output logic [6:0]Max_timer,
 					  //output logic [2:0]Max_incorrect_guesses, 
 					  output logic [1:0]Max_digit,
-					  output logic [1:0]WINorLOSE
+					  output logic [1:0]WINorLOSE,
+					  output logic [2:0]guesses_left
 						);
 	
 	logic [2:0]Max_incorrect_guesses;
@@ -28,9 +29,9 @@
 		case(presentState)			
 			diff1: begin
 					if(confirmButton)begin
-						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 4 ) begin
+						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 3 ) begin
 							nextState <= diff2;
-						end else if ( timer == 0 || incorrect_guesses > 2 ) begin
+						end else if ( timer == 0 || incorrect_guesses > 3 ) begin
 							nextState <= gameover;
 						end else
 							nextState <= diff1;
@@ -40,9 +41,9 @@
 				
 			diff2: begin
 					if(confirmButton)begin				
-						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 4 ) begin
+						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 3 ) begin
 							nextState <= diff3;
-						end else if ( timer == 0 || incorrect_guesses > 3 ) begin
+						end else if ( timer == 0 || incorrect_guesses > 4 ) begin
 							nextState <= gameover;
 						end else
 							nextState <= diff2;
@@ -52,9 +53,9 @@
 				
 			diff3: begin
 					if(confirmButton)begin				
-						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 4 ) begin
+						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 3 ) begin
 							nextState <= win;
-						end else if ( timer == 0 || incorrect_guesses > 4 ) begin
+						end else if ( timer == 0 || incorrect_guesses > 5 ) begin
 							nextState <= gameover;
 						end else
 							nextState <= diff3;
@@ -124,5 +125,7 @@
 			end
 		endcase
 	end
+
+	assign guesses_left = Max_incorrect_guesses - incorrect_guesses;
 
 endmodule

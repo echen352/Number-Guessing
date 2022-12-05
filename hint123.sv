@@ -10,7 +10,7 @@ module hint123(input logic clk, confirmButton, restart,
 always_ff@(posedge clk)
 begin
 	if (!restart) begin
-		hint <= 2'b11;
+		hint1 <= 2'b11;
 		round <= 1;
 		incorrect_guess <= 0;
 	end
@@ -18,11 +18,16 @@ begin
 		if(confirmButton)begin
 			case(Max_digit)
 				1:	begin	// case for single digit comparison
-						if(key0 == answer0)
-							round <= round + 1;	// move to next round upon correct guess
+						if(key0 == answer0) begin
+							if (round < 3'd4) begin
+								round <= round + 1'b1;	// move to next round upon correct guess
+							end else begin
+								round <= 0;		// reset round for next difficulty
+							end
 							hint1 <= 2'b11;		// do not provide player with any hint
-						else
-							incorrect_guess <= incorrect_guess + 1;	// record incorrect guesses
+						end else begin
+							incorrect_guess <= incorrect_guess + 1'b1;	// record incorrect guesses
+						end
 						
 						if(key0 > answer0)	// checks if player guess is greater than answer
 							hint1 <= 0;		// prompts player to guess lower on next attempt
@@ -31,11 +36,16 @@ begin
 					end
 				
 				2:	begin	// case for double digit comparison
-						if(key1 == answer1 && key0 == answer0)
-							round <= round + 1;	//next round if all 2 digits are correct
+						if(key1 == answer1 && key0 == answer0) begin
+							if (round < 3'd4) begin
+								round <= round + 1'b1;	// next round if 2 digits are correct
+							end else begin
+								round <= 0;
+							end
 							hint1 <= 2'b11;
-						else
-							incorrect_guess <= incorrect_guess + 1;
+						end else begin
+							incorrect_guess <= incorrect_guess + 1'b1;
+						end
 							
 						if(key1 > answer1)
 							hint1 <= 0;
@@ -51,11 +61,16 @@ begin
 					end			
 				
 				3:	begin	// case for triple digit comparison
-						if(key2 == answer2 && key1 == answer1 && key0 == answer0)
-							round <= round + 1;	// next round if all 3 digits are correct
+						if(key2 == answer2 && key1 == answer1 && key0 == answer0) begin
+							if (round < 3'd4) begin
+								round <= round + 1'b1;	// next round if all 3 digits are correct
+							end else begin
+								round <= 0;
+							end
 							hint1 <= 2'b11;
-						else
-							incorrect_guess <= incorrect_guess + 1;
+						end else begin
+							incorrect_guess <= incorrect_guess + 1'b1;
+						end
 							
 						if(key2 > answer2)
 							hint1 <= 0;
@@ -76,7 +91,11 @@ begin
 							end
 						end				
 					end
-				default: hint1 <= 2'b11;
+			default:begin
+						hint1 <= 2'b11;
+						round <= 1;
+						incorrect_guess <= 0;
+					end
 			endcase
 		end
 	end

@@ -1,6 +1,6 @@
 module synch_digit_inputs(input logic [2:0] sig,
 					input logic clk, reset,
-					output logic sigSync, rising_ind, falling_ind);
+					output logic [2:0] sigSync, rising_ind, falling_ind);
 
 
 logic [2:0] sig_FF1, sig_FF2, sig_FF3;
