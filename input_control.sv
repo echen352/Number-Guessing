@@ -1,4 +1,4 @@
-module input_control(input logic clk,
+module input_control(input logic clk, restart,
 					input logic [3:0] display_digit_1, display_digit_2, display_digit_3,
 					input logic [1:0] max_digits,
 					input logic [2:0] pushbuttons,
@@ -44,13 +44,22 @@ end
 */
 always_ff@(posedge clk)
 begin
-	update_digit_1 <= display_digit_1;
-	update_digit_2 <= display_digit_2;
-	update_digit_3 <= display_digit_3;
-	if (confirm) begin
-		compare_digit_1 <= display_digit_1;
-		compare_digit_2 <= display_digit_2;
-		compare_digit_3 <= display_digit_3;
+	if (!restart) begin
+		update_digit_1 <= 4'd0;
+		update_digit_2 <= 4'd0;
+		update_digit_3 <= 4'd0;
+		compare_digit_1 <= 4'd0;
+		compare_digit_2 <= 4'd0;
+		compare_digit_3 <= 4'd0;
+	end else begin
+		update_digit_1 <= display_digit_1;
+		update_digit_2 <= display_digit_2;
+		update_digit_3 <= display_digit_3;
+		if (confirm) begin
+			compare_digit_1 <= display_digit_1;
+			compare_digit_2 <= display_digit_2;
+			compare_digit_3 <= display_digit_3;
+		end
 	end
 end
 
