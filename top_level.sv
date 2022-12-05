@@ -3,6 +3,9 @@ module top_level(input logic clk, rst, confirmButton,
 					output logic [6:0] seg1, seg2, seg3, seg4, seg5, seg6, seg7, seg8,
 					output logic [2:0] roundLED, diffLED);
 
+// divided clock
+logic oclk;
+
 // synchronized logic
 logic rstSync;			// rstSync -> all FFs
 logic confirmSync;		// Sync -> Input Control
@@ -29,6 +32,10 @@ logic [1:0] WINorLOSE;	// FSM -> 7-Seg
 logic [2:0] guesses_left;	// FSM -> 7-Seg
 /*************************************************************************************************************************************************/
 
+// clock divider
+clockdiv(.iclk(clk), .oclk(oclk));
+						
+						
 
 // asynchronous assert synchronous deassert reset
 resetSync fReset(.clk(clk), .rst(rst), .rstSync(rstSync));
@@ -79,7 +86,7 @@ fsm fFSM(.clk(clk), .restart(rstSync), .confirmButton(confirmSync),
 	inputs: [0] clk, [0] restart, [1:0] max digits
 	outputs: [6:0] counter
 */
-timer fTimer(.clk(clk), .restart(rstSync),
+timer fTimer(.clk(oclk), .restart(rstSync),
 				 .Max_digit(max_digits),
 				 .counter(currentTimerCount));
 
