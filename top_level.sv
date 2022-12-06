@@ -20,7 +20,7 @@ logic [3:0] confirm_digit_1, confirm_digit_2, confirm_digit_3;	// Input Control 
 
 // hint logic
 logic [1:0] LOWorHIGH;	// Hint -> 7-Seg
-logic [2:0] round;		// Hint -> FSM; Hint -> 7-Seg
+logic [1:0] round;		// Hint -> FSM; Hint -> 7-Seg
 logic [2:0] incorrect_guesses;	// Hint -> FSM
 
 // get target number logic
@@ -73,7 +73,7 @@ input_control fInput(.clk(clk), .restart(rstSync),
 
 /*	-----------------------------------------------------------------------------------------------------------------------------------------------
 	fsm:	controls the progression of the game
-	inputs: [2:0] num incorrect guesses, [2:0] num rounds, [6:0] timer, [0] confirm button, [0] restart, [0] clk
+	inputs: [2:0] num incorrect guesses, [1:0] num rounds, [6:0] timer, [0] confirm button, [0] restart, [0] clk
 	outputs: [1:0] max digits, [1:0] Win/Lose, [2:0] guesses left
 */
 fsm fFSM(.clk(clk), .restart(rstSync), .confirmButton(confirmSync),

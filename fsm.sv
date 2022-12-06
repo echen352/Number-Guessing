@@ -1,5 +1,6 @@
   module fsm(input logic clk, restart, 		// restart is reset button, change to sw
-					   input logic [2:0]incorrect_guesses, round,
+					   input logic [2:0]incorrect_guesses,
+					   input logic [1:0] round,
 					   input logic [6:0]timer,
 						input logic confirmButton,		// comfirm the input number
 					  //output logic [6:0]Max_timer,

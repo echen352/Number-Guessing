@@ -2,7 +2,7 @@ module hint123(input logic clk, confirmButton, restart,
 				 input logic [3:0]key0, key1, key2, answer0, answer1, answer2,
 				 input logic [1:0]Max_digit,
 				output logic [1:0]hint1, // 0 is lower, 1 is higher
-				output logic [2:0]round, 
+				output logic [1:0]round, 
 				output logic [2:0]incorrect_guess
 				);
 
@@ -19,7 +19,7 @@ begin
 			case(Max_digit)
 				1:	begin	// case for single digit comparison
 						if(key0 == answer0) begin
-							if (round < 3'd4) begin
+							if (round < 2'd4) begin
 								round <= round + 1'b1;	// move to next round upon correct guess
 							end else begin
 								round <= 0;		// reset round for next difficulty
@@ -37,7 +37,7 @@ begin
 				
 				2:	begin	// case for double digit comparison
 						if(key1 == answer1 && key0 == answer0) begin
-							if (round < 3'd4) begin
+							if (round < 2'd4) begin
 								round <= round + 1'b1;	// next round if 2 digits are correct
 							end else begin
 								round <= 0;
@@ -62,7 +62,7 @@ begin
 				
 				3:	begin	// case for triple digit comparison
 						if(key2 == answer2 && key1 == answer1 && key0 == answer0) begin
-							if (round < 3'd4) begin
+							if (round < 2'd4) begin
 								round <= round + 1'b1;	// next round if all 3 digits are correct
 							end else begin
 								round <= 0;

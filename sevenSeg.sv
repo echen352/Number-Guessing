@@ -1,5 +1,4 @@
-module sevenSeg(input logic clk,
-					 input logic [7:0]timer,						// timer display
+module sevenSeg(input logic [7:0]timer,						// timer display
 					 input logic [2:0]guesses,						// number of guesses
 					 input logic [3:0]guess1, guess2, guess3,	//	3 pushbutton		
 					 input logic [1:0]hint1,// hint2, hint3,			// lower or higher
@@ -10,7 +9,7 @@ module sevenSeg(input logic clk,
 					output logic [2:0]roundLED, diffLED
 					);
 					
-	always_ff@(posedge clk)
+	always_comb
 	begin
 		if(WINorLOSE == 0)begin
 			seg1 <= 7'b0010001; // Y

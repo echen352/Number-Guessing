@@ -16,25 +16,31 @@ logic [3:0] display_digit_1 = 4'd0, display_digit_2 = 4'd0, display_digit_3 = 4'
 */
 always_ff@(posedge clk)
 begin
-	if (pushbuttons[0] == 1'b1 && max_digits > 2'd0) begin
-		if (display_digit_1 < 4'd9)
-			display_digit_1 <= display_digit_1 + 1'd1;
-		else
-			display_digit_1 <= 4'd0;
-	end
-			
-	if (pushbuttons[1] == 1'b1 && max_digits > 2'd1) begin
-		if (display_digit_2 < 4'd9)
-			display_digit_2 <= display_digit_2 + 1'd1;
-		else
-			display_digit_2 <= 4'd0;
-	end
-	
-	if (pushbuttons[2] == 1'b1 && max_digits > 2'd2) begin
-		if (display_digit_3 < 4'd9)
-			display_digit_3 <= display_digit_3 + 1'd1;
-		else
-			display_digit_3 <= 4'd0;
+	if (!restart) begin
+		display_digit_1 <= 0;
+		display_digit_2 <= 0;
+		display_digit_3 <= 0;
+	end else begin
+		if (pushbuttons[0] == 1'b1 && max_digits > 2'd0) begin
+			if (display_digit_1 < 4'd9)
+				display_digit_1 <= display_digit_1 + 1'd1;
+			else
+				display_digit_1 <= 4'd0;
+		end
+				
+		if (pushbuttons[1] == 1'b1 && max_digits > 2'd1) begin
+			if (display_digit_2 < 4'd9)
+				display_digit_2 <= display_digit_2 + 1'd1;
+			else
+				display_digit_2 <= 4'd0;
+		end
+		
+		if (pushbuttons[2] == 1'b1 && max_digits > 2'd2) begin
+			if (display_digit_3 < 4'd9)
+				display_digit_3 <= display_digit_3 + 1'd1;
+			else
+				display_digit_3 <= 4'd0;
+		end
 	end
 end
 
