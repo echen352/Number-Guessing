@@ -49,7 +49,7 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				86: begin
 					seg1 <= 7'b0000000;
-					seg2 <= 7'b0000011;
+					seg2 <= 7'b0000010;
 				end
 				85: begin
 					seg1 <= 7'b0000000;
@@ -76,83 +76,83 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 					seg2 <= 7'b1000000;
 				end
 				79: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b1000000;
 				end
 				78: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b1000000;
 				end
 				77: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b1000000;
 				end
 				76: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b1000000;
 				end
 				75: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b0010010;
 				end
 				74: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b0011001;
 				end
 				73: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b0110000;
 				end
 				72: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b0100100;
 				end
 				71: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b1111001;
 				end
 				70: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b1111000;
 					seg2 <= 7'b1000000;
 				end
 				69: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b1000000;
 				end
 				68: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b1000000;
 				end
 				67: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b1000000;
 				end
 				66: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b1000000;
 				end
 				65: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b0010010;
 				end
 				64: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b0011001;
 				end
 				63: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b0110000;
 				end
 				62: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b0100100;
 				end
 				61: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b1111001;
 				end
 				60: begin
-					seg1 <= 7'b0010000;
+					seg1 <= 7'b0000010;
 					seg2 <= 7'b1000000;
 				end
 				59: begin
@@ -357,19 +357,19 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				9: begin
 					seg1 <= 7'b1111111;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0010000;
 				end
 				8: begin
 					seg1 <= 7'b1111111;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000000;
 				end
 				7: begin
 					seg1 <= 7'b1111111;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b1111000;
 				end
 				6: begin
 					seg1 <= 7'b1111111;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000010;
 				end
 				5: begin
 					seg1 <= 7'b1111111;
