@@ -1,15 +1,15 @@
-module sevenSeg(input logic [7:0]timer,						// timer display
+module sevenSeg(input logic clk, input logic [7:0]timer,						// timer display
 					 input logic [2:0]guesses,						// number of guesses
 					 input logic [3:0]guess1, guess2, guess3,	//	3 pushbutton		
 					 input logic [1:0]hint1,// hint2, hint3,			// lower or higher
-					 input logic [1:0]round,						// round status , LEDs
+					 input logic [3:0]round,						// round status , LEDs
 					 input logic [1:0]difficulty,
 					 input logic [1:0]WINorLOSE,					// should get vaule from other module. 11 is diff 1, 2 or 3. 1 is win, 0 is lose
 					output logic [6:0]seg1, seg2, seg3, seg4, seg6, seg7, seg8, seg5,
 					output logic [2:0]roundLED, diffLED
 					);
 					
-	always_comb
+	always_ff @(posedge clk)
 	begin
 		if(WINorLOSE == 0)begin
 			seg1 <= 7'b0010001; // Y
@@ -77,19 +77,19 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				79: begin
 					seg1 <= 7'b1111000;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0010000;
 				end
 				78: begin
 					seg1 <= 7'b1111000;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000000;
 				end
 				77: begin
 					seg1 <= 7'b1111000;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b1111000;
 				end
 				76: begin
 					seg1 <= 7'b1111000;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000010;
 				end
 				75: begin
 					seg1 <= 7'b1111000;
@@ -117,19 +117,19 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				69: begin
 					seg1 <= 7'b0000010;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0010000;
 				end
 				68: begin
 					seg1 <= 7'b0000010;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000000;
 				end
 				67: begin
 					seg1 <= 7'b0000010;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b1111000;
 				end
 				66: begin
 					seg1 <= 7'b0000010;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000010;
 				end
 				65: begin
 					seg1 <= 7'b0000010;
@@ -157,19 +157,19 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				59: begin
 					seg1 <= 7'b0010010;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0010000;
 				end
 				58: begin
 					seg1 <= 7'b0010010;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000000;
 				end
 				57: begin
 					seg1 <= 7'b0010010;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b1111000;
 				end
 				56: begin
 					seg1 <= 7'b0010010;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000010;
 				end
 				55: begin
 					seg1 <= 7'b0010010;
@@ -197,19 +197,19 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				49: begin
 					seg1 <= 7'b0011001;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0010000;
 				end
 				48: begin
 					seg1 <= 7'b0011001;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000000;
 				end
 				47: begin
 					seg1 <= 7'b0011001;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b1111000;
 				end
 				46: begin
 					seg1 <= 7'b0011001;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000010;
 				end
 				45: begin
 					seg1 <= 7'b0011001;
@@ -237,19 +237,19 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				39: begin
 					seg1 <= 7'b0110000;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0010000;
 				end
 				38: begin
 					seg1 <= 7'b0110000;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000000;
 				end
 				37: begin
 					seg1 <= 7'b0110000;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b1111000;
 				end
 				36: begin
 					seg1 <= 7'b0110000;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000010;
 				end
 				35: begin
 					seg1 <= 7'b0110000;
@@ -277,19 +277,19 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				29: begin
 					seg1 <= 7'b0100100;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0010000;
 				end
 				28: begin
 					seg1 <= 7'b0100100;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000000;
 				end
 				27: begin
 					seg1 <= 7'b0100100;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b1111000;
 				end
 				26: begin
 					seg1 <= 7'b0100100;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000010;
 				end
 				25: begin
 					seg1 <= 7'b0100100;
@@ -317,19 +317,19 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				end
 				19: begin
 					seg1 <= 7'b1111001;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0010000;
 				end
 				18: begin
 					seg1 <= 7'b1111001;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000000;
 				end
 				17: begin
 					seg1 <= 7'b1111001;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b1111000;
 				end
 				16: begin
 					seg1 <= 7'b1111001;
-					seg2 <= 7'b1000000;
+					seg2 <= 7'b0000010;
 				end
 				15: begin
 					seg1 <= 7'b1111001;
@@ -431,6 +431,18 @@ module sevenSeg(input logic [7:0]timer,						// timer display
 				2:
 					roundLED <= 3'b010;
 				3:
+					roundLED <= 3'b100;
+				4:
+					roundLED <= 3'b001;
+				5:
+					roundLED <= 3'b010;
+				6:
+					roundLED <= 3'b100;
+				7:
+					roundLED <= 3'b001;
+				8:
+					roundLED <= 3'b010;
+				9:
 					roundLED <= 3'b100;
 				default:
 					roundLED <= 3'b000;

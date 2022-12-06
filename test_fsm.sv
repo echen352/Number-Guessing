@@ -9,7 +9,7 @@ module test_fsm();
 	logic [6:0] timer;
 	
 	// Connect device to test
-	fsm(.clk(clk), .restart(restart), .incorrect_guesses(incorrect_guesses),
+	fsm dut(.clk(clk), .restart(restart), .incorrect_guesses(incorrect_guesses),
 			.round(round), .timer(timer), .confirmButton(confirmButton),
 			.Max_digit(Max_digit), .WINorLOSE(WINorLOSE), .guesses_left(guesses_left));
 	
@@ -20,15 +20,19 @@ module test_fsm();
 	task testcase();
 		@(negedge clk) begin
 			restart <= 1'b1;
-			Max_digit <= 2'd1;
 			incorrect_guesses <= 3'd0;
 			round <= 2'd1;
 			timer <= 7'd30;
 		end
 		
-		@(negedge clk);
-		#1 $display("Max Digit = %d, WINorLOSE = %d, guesses_left = %d", Max_digit, WINorLOSE, guesses_left);
-		$display("");
+		for (int i = 0; i < 40; i++) begin
+			@(posedge clk);
+			#1 $display("Max Digit = %d, WINorLOSE = %d, guesses_left = %d", Max_digit, WINorLOSE, guesses_left);
+			$display("");
+			
+			repeat(3) @(negedge clk);
+			timer <= timer - i;
+		end
 		
 	endtask
 	

@@ -61,11 +61,11 @@ begin
 		update_digit_1 <= display_digit_1;
 		update_digit_2 <= display_digit_2;
 		update_digit_3 <= display_digit_3;
-		if (confirm) begin
+		/*if (confirm) begin
 			compare_digit_1 <= display_digit_1;
 			compare_digit_2 <= display_digit_2;
 			compare_digit_3 <= display_digit_3;
-		end
+		end*/
 	end
 end
 

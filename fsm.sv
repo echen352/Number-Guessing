@@ -1,6 +1,6 @@
   module fsm(input logic clk, restart, 		// restart is reset button, change to sw
 					   input logic [2:0]incorrect_guesses,
-					   input logic [1:0] round,
+					   input logic [3:0] round,
 					   input logic [6:0]timer,
 						input logic confirmButton,		// comfirm the input number
 					  //output logic [6:0]Max_timer,
@@ -11,6 +11,9 @@
 						);
 	
 	logic [2:0]Max_incorrect_guesses;
+	logic [1:0] reg_max_digit = 2'd1;
+	
+	assign Max_digit = reg_max_digit;
 	
 	typedef enum logic [2:0] {diff1, diff2, diff3, gameover, win} stateType;
 	
@@ -29,39 +32,32 @@
 	begin	
 		case(presentState)			
 			diff1: begin
-					if(confirmButton)begin
-						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 3 ) begin
+						if( round > 3 ) begin
+							reg_max_digit <= 2'd2;
 							nextState <= diff2;
 						end else if ( timer == 0 || incorrect_guesses > 3 ) begin
 							nextState <= gameover;
-						end else
-							nextState <= diff1;
-					end else
-						nextState <= diff1;
-				end
+						end //else
+							//nextState <= diff1;
+					end
 				
-			diff2: begin
-					if(confirmButton)begin				
-						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 3 ) begin
+			diff2: begin		
+						if( round > 6 ) begin
+							reg_max_digit <= 2'd3;
 							nextState <= diff3;
 						end else if ( timer == 0 || incorrect_guesses > 4 ) begin
 							nextState <= gameover;
 						end else
 							nextState <= diff2;
-					end else
-						nextState <= diff2;
 				end
 				
-			diff3: begin
-					if(confirmButton)begin				
-						if( timer > 0 && incorrect_guesses < Max_incorrect_guesses && round > 3 ) begin
+			diff3: begin				
+						if( round > 9 ) begin
 							nextState <= win;
 						end else if ( timer == 0 || incorrect_guesses > 5 ) begin
 							nextState <= gameover;
 						end else
 							nextState <= diff3;
-					end else
-						nextState <= diff3;
 				end	
 				
 			win: begin
@@ -88,40 +84,40 @@
 				nextState <= diff1;
 			end
 				
-			endcase
+		endcase
 	end
 			
-	always_comb
+	always_ff@(posedge clk)
 	begin
 		case(presentState)
 			diff1: begin
 				//Max_timer <= 30;
 				Max_incorrect_guesses <= 3;
-				Max_digit <= 1;
+				//Max_digit <= 1;
 				WINorLOSE <= 2'b11;	// Continue gameplay
 			end
 			diff2: begin
 				//Max_timer <= 60;
 				Max_incorrect_guesses <= 4;
-				Max_digit <= 2;
+				//Max_digit <= 2;
 				WINorLOSE <= 2'b11;
 			end
 			diff3: begin
 				//Max_timer <= 90;
 				Max_incorrect_guesses <= 5;
-				Max_digit <= 3;
+				//Max_digit <= 3;
 				WINorLOSE <= 2'b11;
 			end
 			gameover: begin
 				//Max_timer <= 0;
 				Max_incorrect_guesses <= 0;
-				Max_digit <= 0;
+				//Max_digit <= 0;
 				WINorLOSE <= 2'b0;	// Lose condition
 			end
 			win: begin
 				//Max_timer <= 0;
 				Max_incorrect_guesses <= 0;
-				Max_digit <= 0;
+				//Max_digit <= 0;
 				WINorLOSE <= 2'b1;	// Win condition
 			end
 		endcase

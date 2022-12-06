@@ -20,7 +20,7 @@ logic [3:0] confirm_digit_1, confirm_digit_2, confirm_digit_3;	// Input Control 
 
 // hint logic
 logic [1:0] LOWorHIGH;	// Hint -> 7-Seg
-logic [1:0] round;		// Hint -> FSM; Hint -> 7-Seg
+logic [3:0] round;		// Hint -> FSM; Hint -> 7-Seg
 logic [2:0] incorrect_guesses;	// Hint -> FSM
 
 // get target number logic
@@ -33,7 +33,7 @@ logic [2:0] guesses_left;	// FSM -> 7-Seg
 /*************************************************************************************************************************************************/
 
 // clock divider
-clockdiv(.iclk(clk), .oclk(oclk));
+clockdiv fClockdiv(.iclk(clk), .oclk(oclk));
 						
 						
 
@@ -66,8 +66,8 @@ input_control fInput(.clk(clk), .restart(rstSync),
 					.max_digits(max_digits),
 					.pushbuttons(digitSync),
 					.confirm(confirmSync),
-					.update_digit_1(digitDisplay1), .update_digit_2(digitDisplay2), .update_digit_3(digitDisplay3),
-					.compare_digit_1(confirm_digit_1), .compare_digit_2(confirm_digit_2), .compare_digit_3(confirm_digit_3));
+					.update_digit_1(digitDisplay1), .update_digit_2(digitDisplay2), .update_digit_3(digitDisplay3));
+					//.compare_digit_1(confirm_digit_1), .compare_digit_2(confirm_digit_2), .compare_digit_3(confirm_digit_3));
 
 
 
@@ -99,11 +99,14 @@ timer fTimer(.clk(oclk), .restart(rstSync),
 			[3:0] answer digit 1, [3:0] answer digit 2, [3:0] answer digit 3
 	output:	[1:0] hint
 */
-hint123 fHint(.clk(clk), .confirmButton(confirmSync), .restart(rstSync),
+/*hint123 fHint(.clk(clk), .confirmButton(confirmSync), .restart(rstSync), .Max_digit(max_digits),
 				 .key0(confirm_digit_1), .key1(confirm_digit_2), .key2(confirm_digit_3),
 				 .answer0(target_digit_1), .answer1(target_digit_2), .answer2(target_digit_3),
+				.hint1(LOWorHIGH), .incorrect_guess(incorrect_guesses), .round(round));*/
+hint123 fHint(.clk(clk), .confirmButton(confirmSync), .restart(rstSync), .Max_digit(max_digits),
+				 .key0(digitDisplay1), .key1(digitDisplay2), .key2(digitDisplay3),
+				 .answer0(target_digit_1), .answer1(target_digit_2), .answer2(target_digit_3),
 				.hint1(LOWorHIGH), .incorrect_guess(incorrect_guesses), .round(round));
-
 
 
 /*	-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -111,7 +114,7 @@ hint123 fHint(.clk(clk), .confirmButton(confirmSync), .restart(rstSync),
 	inputs: [1:0] Max digit, [2:0] round,
 	output:	[3:0] target digit 1, [3:0] target digit 2, [3:0] target digit 3
 */
-get_target_number fGetNum(.Max_digit(max_digits), .round(round),
+get_target_number fGetNum(.clk(clk), .Max_digit(max_digits), .round(round),
 				.target_digit_1(target_digit_1), .target_digit_2(target_digit_2), .target_digit_3(target_digit_3));
 
 
