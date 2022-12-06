@@ -1,7 +1,8 @@
 module top_level(input logic clk, rst, confirmButton,
 					input logic [2:0] digitButtons,
 					output logic [6:0] seg1, seg2, seg3, seg4, seg5, seg6, seg7, seg8,
-					output logic [2:0] roundLED, diffLED);
+					output logic [2:0] roundLED, diffLED,
+					output logic resetLED);
 
 // divided clock
 logic oclk;
@@ -126,11 +127,12 @@ get_target_number fGetNum(.clk(clk), .Max_digit(max_digits), .round(round),
 	outputs: [2:0] round (LEDs), [2:0] difficulty (LEDs),
 			 [6:0] for all 8 7-segments
 */
-sevenSeg f7Seg(.clk(clk), .timer(currentTimerCount), .guesses(guesses_left), .guess1(digitDisplay1), .guess2(digitDisplay2), .guess3(digitDisplay3),		
+sevenSeg f7Seg(.clk(clk), .restart(rstSync), .timer(currentTimerCount), .guesses(guesses_left), .guess1(digitDisplay1), .guess2(digitDisplay2), .guess3(digitDisplay3),		
 					 .hint1(LOWorHIGH), .round(round),
 					 .difficulty(max_digits),
 					 .WINorLOSE(WINorLOSE),
+					 .Max_digit(max_digits),
 					.seg1(seg1), .seg2(seg2), .seg3(seg3), .seg4(seg4), .seg5(seg5), .seg6(seg6), .seg7(seg7), .seg8(seg8),
-					.roundLED(roundLED), .diffLED(diffLED));
+					.roundLED(roundLED), .diffLED(diffLED), .resetLED(resetLED));
 
 endmodule

@@ -7,17 +7,30 @@ module hint123(input logic clk, confirmButton, restart,
 				);
 
 logic [3:0] reg_round = 4'd1;
-logic [2:0] reg_incorrect_guess = 3'd0;
+logic [2:0] reg_incorrect_guess_d1 = 3'd0, reg_incorrect_guess_d2 = 3'd0, reg_incorrect_guess_d3 = 3'd0;
 
 assign round = reg_round;
-assign incorrect_guess = reg_incorrect_guess;
+
+always_comb
+begin
+	if (Max_digit == 2'd1)
+		incorrect_guess <= reg_incorrect_guess_d1;
+	else if (Max_digit == 2'd2)
+		incorrect_guess <= reg_incorrect_guess_d2;
+	else if (Max_digit == 2'd3)
+		incorrect_guess <= reg_incorrect_guess_d3;
+	else
+		incorrect_guess <= 3'd0;
+end
 
 always_ff@(posedge clk)
 begin
 	if (!restart) begin
 		hint1 <= 2'b11;
 		reg_round <= 1;
-		reg_incorrect_guess <= 0;
+		reg_incorrect_guess_d1 <= 0;
+		reg_incorrect_guess_d2 <= 0;
+		reg_incorrect_guess_d3 <= 0;
 	end else begin
 		if(confirmButton)begin
 			case(Max_digit)
@@ -30,7 +43,7 @@ begin
 							//end
 							hint1 <= 2'b11;		// do not provide player with any hint
 						end else begin
-							reg_incorrect_guess++;	// record incorrect guesses
+							reg_incorrect_guess_d1++;	// record incorrect guesses
 						end
 						
 						if(key0 > answer0)	// checks if player guess is greater than answer
@@ -48,7 +61,7 @@ begin
 							//end
 							hint1 <= 2'b11;
 						end else begin
-							reg_incorrect_guess++;
+							reg_incorrect_guess_d2++;
 						end
 							
 						if(key1 > answer1)
@@ -73,7 +86,7 @@ begin
 							//end
 							hint1 <= 2'b11;
 						end else begin
-							reg_incorrect_guess++;
+							reg_incorrect_guess_d3++;
 						end
 							
 						if(key2 > answer2)
@@ -98,7 +111,9 @@ begin
 			default:begin
 						hint1 <= 2'b11;
 						reg_round <= 1;
-						reg_incorrect_guess <= 0;
+						reg_incorrect_guess_d1 <= 0;
+						reg_incorrect_guess_d2 <= 0;
+						reg_incorrect_guess_d3 <= 0;
 					end
 			endcase
 		end

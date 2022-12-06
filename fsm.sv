@@ -11,7 +11,7 @@
 						);
 	
 	logic [2:0]Max_incorrect_guesses;
-	logic [1:0] reg_max_digit = 2'd1;
+	logic [1:0] reg_max_digit = 2'b01;
 	
 	assign Max_digit = reg_max_digit;
 	
@@ -21,70 +21,74 @@
 
 	always_ff @(posedge clk)
 	begin
-		if (!restart)
+		if (!restart) begin
 			presentState <= diff1;
-		else
+			//reg_max_digit <= 2'b01;
+		end else
 			presentState <= nextState;
 	end
 	
 	
 	always_ff @(posedge clk)
-	begin	
-		case(presentState)			
-			diff1: begin
-						if( round > 3 ) begin
-							reg_max_digit <= 2'd2;
-							nextState <= diff2;
-						end else if ( timer == 0 || incorrect_guesses > 3 ) begin
-							nextState <= gameover;
-						end //else
-							//nextState <= diff1;
+	begin
+		if (!restart) begin
+			reg_max_digit <= 2'b01;
+		end else begin
+			case(presentState)			
+				diff1: begin
+							if( round > 3 ) begin
+								reg_max_digit <= 2'b10;
+								nextState <= diff2;
+							end else if ( timer == 0 || incorrect_guesses > 3 ) begin
+								nextState <= gameover;
+							end else
+								nextState <= diff1;
+						end
+					
+				diff2: begin		
+							if( round > 6 ) begin
+								reg_max_digit <= 2'b11;
+								nextState <= diff3;
+							end else if ( timer == 0 || incorrect_guesses > 4 ) begin
+								nextState <= gameover;
+							end else
+								nextState <= diff2;
 					end
-				
-			diff2: begin		
-						if( round > 6 ) begin
-							reg_max_digit <= 2'd3;
-							nextState <= diff3;
-						end else if ( timer == 0 || incorrect_guesses > 4 ) begin
-							nextState <= gameover;
-						end else
-							nextState <= diff2;
-				end
-				
-			diff3: begin				
-						if( round > 9 ) begin
-							nextState <= win;
-						end else if ( timer == 0 || incorrect_guesses > 5 ) begin
-							nextState <= gameover;
-						end else
-							nextState <= diff3;
-				end	
-				
-			win: begin
-					/*if(confirmButton)begin
-						if(restart)
-							nextState <= diff1;
-						else 
-							nextState <= win;
-					end else*/
-						nextState <= win;
-				end
-				
-			gameover: begin
-					/*if(confirmButton)begin
+					
+				diff3: begin				
+							if( round > 9 ) begin
+								nextState <= win;
+							end else if ( timer == 0 || incorrect_guesses > 5 ) begin
+								nextState <= gameover;
+							end else
+								nextState <= diff3;
+					end	
+					
+				win: begin
+						/*if(confirmButton)begin
 							if(restart)
 								nextState <= diff1;
 							else 
-								nextState <= gameover;					
-					end else*/
-						nextState <= gameover;
-				end
-				
-			default: begin
-				nextState <= diff1;
-			end
-				
-		endcase
+								nextState <= win;
+						end else*/
+							nextState <= win;
+					end
+					
+				gameover: begin
+						/*if(confirmButton)begin
+								if(restart)
+									nextState <= diff1;
+								else 
+									nextState <= gameover;					
+						end else*/
+							nextState <= gameover;
+					end
+					
+				default: begin
+					nextState <= diff1;
+				end		
+			endcase
+		end
 	end
 			
 	always_ff@(posedge clk)
