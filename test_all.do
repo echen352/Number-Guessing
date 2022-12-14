@@ -29,11 +29,27 @@ vsim -voptargs=+acc test_all
 ### ---------------------------------------------- ###
 ### Add waves here ###
 ### Use add wave * to see all signals ###
-add wave *
-add wave /dut/*
-add wave /dut/fHint/*
-add wave /dut/fFSM/*
-add wave /dut/fGetNum/*
+add wave clk
+add wave rst
+add wave confirmButton
+add wave digitButtons
+
+add wave /dut/fInput/update_digit_1
+add wave /dut/fInput/update_digit_2
+add wave /dut/fInput/update_digit_3
+
+add wave /dut/fGetNum/target_digit_1
+add wave /dut/fGetNum/target_digit_2
+add wave /dut/fGetNum/target_digit_3
+
+add wave /dut/fHint/hint1
+
+add wave /dut/fFSM/timer
+add wave /dut/fFSM/Max_incorrect_guesses
+add wave /dut/fFSM/incorrect_guesses
+add wave /dut/fFSM/guesses_left
+add wave /dut/fFSM/round
+add wave /dut/fFSM/presentState
 
 ### Force waves here ###
 
@@ -48,7 +64,7 @@ view signals
 
 ### ---------------------------------------------- ###
 ### Edit run time ###
-run 20000 ns
+run 100 us
 
 ### ---------------------------------------------- ###
 ### Will create large wave window and zoom to show all signals

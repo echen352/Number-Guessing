@@ -1,11 +1,12 @@
-module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer display
-					 input logic [2:0]guesses,						// number of guesses
-					 input logic [3:0]guess1, guess2, guess3,	//	3 pushbutton		
-					 input logic [1:0]hint1,// hint2, hint3,			// lower or higher
-					 input logic [3:0]round,						// round status , LEDs
-					 input logic [1:0]difficulty,
-					 input logic [1:0]WINorLOSE,					// should get vaule from other module. 11 is diff 1, 2 or 3. 1 is win, 0 is lose
-					 input logic [1:0] Max_digit,
+module sevenSeg(input logic clk, restart,
+					input logic [6:0]timer,
+					input logic [2:0]guesses,
+					input logic [3:0]guess1, guess2, guess3,	
+					input logic [1:0]hint1,
+					input logic [3:0]round,
+					input logic [1:0]difficulty,
+					input logic [1:0]WINorLOSE,
+					input logic [1:0] Max_digit,
 					output logic [6:0]seg1, seg2, seg3, seg4, seg6, seg7, seg8, seg5,
 					output logic [2:0]roundLED, diffLED,
 					output logic resetLED
@@ -24,10 +25,10 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 			seg8 <= 7'b1111111;
 			roundLED <= 3'd0;
 			diffLED <= 3'd0;
-			resetLED <= 1'b1;
+			resetLED <= 1'b1;	// show reset LED
 		end else begin
-			resetLED <= 1'b0;
-			if(WINorLOSE == 2'd0)begin
+			resetLED <= 1'b0;	// turn off LED for reset
+			if(WINorLOSE == 2'd0)begin	// lose condition
 				seg1 <= 7'b0010001; // Y
 				seg2 <= 7'b0100011; // o
 				seg3 <= 7'b1100011; // u
@@ -36,7 +37,7 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 				seg6 <= 7'b0100011; // o
 				seg7 <= 7'b0010010; // s
 				seg8 <= 7'b0000100; // e
-			end else if(WINorLOSE == 2'd1)begin
+			end else if(WINorLOSE == 2'd1)begin	// win condition
 				seg1 <= 7'b0010000; // g
 				seg2 <= 7'b0100011; // o
 				seg3 <= 7'b0100011; // o
@@ -45,8 +46,8 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 				seg6 <= 7'b1110001; // j
 				seg7 <= 7'b0100011; // o
 				seg8 <= 7'b0000011; // b
-			end else begin	
-				case(timer)
+			end else begin	// no win/lose condition yet
+				case(timer)	// reserves two 7-segments for timer; range 0 to 90
 					90: begin
 						seg1 <= 7'b0010000;
 						seg2 <= 7'b1000000;
@@ -417,7 +418,7 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 					end
 				endcase
 				
-				case(guesses)
+				case(guesses)	// reserve one 7-segment for number of guesses
 					0:
 						seg3 <= 7'b1000000;
 					1: 
@@ -431,42 +432,42 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 					5:
 						seg3 <= 7'b0010010;
 					default:
-						seg3 <= 7'b1111111;
+						seg3 <= 7'b1111111;	// reset
 				endcase
 
-				case(hint1)
-					0: // lower
+				case(hint1)	// reserve one 7-segment for hint
+					0: // prompt player to guess lower
 						seg4 <= 7'b1000111;
-					1: // higher
+					1: // prompt player to guess higher
 						seg4 <= 7'b0001001; 
-					default:
+					default:	// player guessed correctly; no hint to show
 						seg4 <= 7'b1111111;
 				endcase
 				
-				case(round)
+				case(round)	// display current round of game on LEDs
 					1:
-						roundLED <= 3'b001;
+						roundLED <= 3'b001;	// round 1, diff 1
 					2:
-						roundLED <= 3'b011;
+						roundLED <= 3'b011;	// round 2, diff 1
 					3:
-						roundLED <= 3'b111;
+						roundLED <= 3'b111;	// round 3, diff 1
 					4:
-						roundLED <= 3'b001;
+						roundLED <= 3'b001;	// round 1, diff 2
 					5:
-						roundLED <= 3'b011;
+						roundLED <= 3'b011;	// round 2, diff 2
 					6:
-						roundLED <= 3'b111;
+						roundLED <= 3'b111;	// round 3, diff 2
 					7:
-						roundLED <= 3'b001;
+						roundLED <= 3'b001;	// round 1, diff 3
 					8:
-						roundLED <= 3'b011;
+						roundLED <= 3'b011;	// round 2, diff 3
 					9:
-						roundLED <= 3'b111;
+						roundLED <= 3'b111;	// round 3, diff 3
 					default:
-						roundLED <= 3'b000;
+						roundLED <= 3'b000;	// reset
 				endcase	
 				
-				case(difficulty)
+				case(difficulty)	// display current difficulty of game on LEDs
 					1:
 						diffLED <= 3'b001;
 					2:
@@ -474,11 +475,11 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 					3:
 						diffLED <= 3'b111;
 					default:
-						diffLED <= 3'b000;
+						diffLED <= 3'b000;	// reset
 				endcase
 				
 				if (Max_digit > 2'd2) begin
-					case(guess3)
+					case(guess3)	// reserve one 7-segment for 3rd digit
 						0:
 							seg6 <= 7'b1000000;
 						1:
@@ -505,7 +506,7 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 				end
 				
 				if (Max_digit > 2'd1) begin
-					case(guess2)
+					case(guess2)	// reserve one 7-segment for 2nd digit
 						0:
 							seg7 <= 7'b1000000;
 						1:
@@ -531,7 +532,7 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 					endcase
 				end
 				
-				case(guess1)
+				case(guess1)	// reserve one 7-segment for 1st digit
 					0:
 						seg8 <= 7'b1000000;
 					1:
@@ -555,24 +556,7 @@ module sevenSeg(input logic clk, restart, input logic [7:0]timer,						// timer 
 					default:
 						seg8 <= 7'b1111111;		
 				endcase		
-				/*
-				case(hint2)
-					0: // lower
-						seg7 <= 7'b1000111;
-					1: // higher
-						seg7 <= 7'b0001001;
-					default:
-						seg7 <= 7'b1110111;
-				endcase
-				case(hint3)
-					0: // lower
-						seg8 <= 7'b1000111;
-					1: // higher
-						seg8 <= 7'b0001001;
-					default:
-						seg8 <= 7'b1110111;
-				endcase
-				*/
+
 			end
 		end
 	end
